@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         e621 tag extractor
+// @name         e621/danbooru tag extractor
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  copy tags from e621
 // @author       NorthPolarise
-// @match        https://e621.net/posts/*
+// @include      https://e621.net/posts/*
+// @include      https://danbooru.donmai.us/posts/*
 // @grant        none
 // ==/UserScript==
 
