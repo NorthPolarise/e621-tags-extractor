@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         e621/danbooru tag extractor
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.2
 // @description  copy tags from e621
 // @author       NorthPolarise
 // @include      https://e621.net/posts/*
 // @include      https://danbooru.donmai.us/posts/*
 // @grant        none
 // @license      GPLv3
+// @downloadURL https://update.greasyfork.org/scripts/520979/e621danbooru%20tag%20extractor.user.js
+// @updateURL https://update.greasyfork.org/scripts/520979/e621danbooru%20tag%20extractor.meta.js
 // ==/UserScript==
 
 (function() {
@@ -123,6 +125,48 @@
 
     createInterface();
 
+    // 加载保存的选择状态和顺序
+    function loadSavedState(tagList) {
+        const savedOrder = JSON.parse(localStorage.getItem('tagOrder') || '[]');
+        const savedChecked = JSON.parse(localStorage.getItem('tagChecked') || '{}');
+
+        if (savedOrder.length > 0) {
+            // 按保存的顺序重新排列标签
+            savedOrder.forEach(tagName => {
+                const tagRow = Array.from(tagList.children).find(row =>
+                                                                 row.querySelector('span').textContent === tagName
+                                                                );
+                if (tagRow) {
+                    tagList.appendChild(tagRow);
+                }
+            });
+        }
+
+        // 恢复选中状态
+        Array.from(tagList.children).forEach(tagRow => {
+            const label = tagRow.querySelector('span').textContent;
+            const checkbox = tagRow.querySelector('input');
+            if (savedChecked[label] !== undefined) {
+                checkbox.checked = savedChecked[label];
+            }
+        });
+    }
+
+    // 保存当前状态
+    function saveCurrentState(tagList) {
+        const currentOrder = Array.from(tagList.children).map(row =>
+                                                              row.querySelector('span').textContent
+                                                             );
+        const currentChecked = {};
+        Array.from(tagList.children).forEach(row => {
+            const label = row.querySelector('span').textContent;
+            currentChecked[label] = row.querySelector('input').checked;
+        });
+
+        localStorage.setItem('tagOrder', JSON.stringify(currentOrder));
+        localStorage.setItem('tagChecked', JSON.stringify(currentChecked));
+    }
+
     function createInterface() {
         // 创建主容器
         const container = document.createElement('div');
@@ -198,6 +242,11 @@
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.style.marginRight = '10px';
+            // 添加 change 事件监听器
+            checkbox.addEventListener('change', () => {
+                saveCurrentState(tagList);
+            });
+
 
             const label = document.createElement('span');
             label.textContent = type.name;
@@ -230,6 +279,9 @@
                 copyButton.style.backgroundColor = '#2e51a2';
             }, 200);
         });
+
+        // 加载保存的状态
+        loadSavedState(tagList);
 
         // 组装界面
         header.appendChild(toggleButton);
@@ -326,7 +378,12 @@
             dragSrcElement.style.display = '';
         }
 
-        return false;
+        // 保存当前状态
+    const tagList = this.parentNode;
+
+    saveCurrentState(tagList);
+
+    return false;
     }
 
     // 修改复制函数
