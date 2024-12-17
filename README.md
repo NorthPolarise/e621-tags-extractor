@@ -31,6 +31,9 @@
 5. 在danbooru使用时物种标签 (Species)无作用，因为danbooru并无此类
 
 ## 更新记录
+v1.1
+- 令danbooru可用
+
 v1.0
 - 初始版本发布
 - 实现基本的标签复制功能
