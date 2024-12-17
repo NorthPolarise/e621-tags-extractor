@@ -31,6 +31,9 @@
 5. 在danbooru使用时物种标签 (Species)无作用，因为danbooru并无此类
 
 ## 更新记录
+v1.2
+- 添加记忆以便在切换网页时保留排序和选项
+
 v1.1
 - 令danbooru可用
 
