@@ -19,7 +19,7 @@
 ## 安装方法
 
 1. 安装浏览器的用户脚本管理器(例如 Tampermonkey)
-2. 点击添加新脚本安装脚本或访问https://greasyfork.org/en/scripts/520979-e621-tag-extractor点击安装
+2. 点击添加新脚本安装脚本或访问https://greasyfork.org/en/scripts/520979-e621-tag-extractor 点击安装
 3. 访问任意 e621.net 的帖子页面即可使用
 
 ## 使用说明
