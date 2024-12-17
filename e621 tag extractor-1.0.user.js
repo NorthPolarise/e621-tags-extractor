@@ -7,6 +7,7 @@
 // @include      https://e621.net/posts/*
 // @include      https://danbooru.donmai.us/posts/*
 // @grant        none
+// @license      GPLv3
 // ==/UserScript==
 
 (function() {
